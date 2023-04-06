@@ -1,4 +1,4 @@
-use crate::domain::user::User;
+use crate::support::user::User;
 use crate::middleware::auth::jwt::JwtAuth;
 use rocket::http::Status;
 use rocket::outcome::Outcome;

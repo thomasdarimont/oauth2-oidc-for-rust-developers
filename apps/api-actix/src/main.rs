@@ -26,7 +26,7 @@ async fn main() -> std::io::Result<()> {
             .wrap(Logger::new("%a \"%r\" %s %b \"%{Referer}i\" %T"))
             .wrap(jwt_validator.clone())
             .wrap(cors)
-            .service(api::me_info::handle_me_info)
+            .service(api::handle_me_info)
     })
     .bind_openssl(
         config.server_bind_addr,

@@ -10,6 +10,11 @@ Add the following entries to your `/etc/hosts` file
 ```
 
 ### Generate certs
+The example uses TLS where possible, therfore we need custom certificates.
+
+We use [mkcert](https://github.com/FiloSottile/mkcert) to automatically generate certs for the example environment.
+
+Run the following command to generate the certs:
 ```
 mkcert -cert-file ./certs/rust.test.pem -key-file ./certs/rust.test-key.pem -install id.rust.test api.rust.test apps.rust.test
 ```

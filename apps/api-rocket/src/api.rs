@@ -1,4 +1,4 @@
-use crate::domain::user::User;
+use crate::support::user::User;
 use chrono::offset::Utc;
 use rocket::serde::json::Json;
 use rocket::{get, options};

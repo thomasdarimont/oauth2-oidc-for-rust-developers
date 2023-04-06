@@ -12,7 +12,6 @@ use rocket::tokio::task::spawn_blocking;
 use crate::middleware::logging;
 
 pub mod api;
-pub mod domain;
 pub mod middleware;
 pub mod support;
 
@@ -24,7 +23,7 @@ async fn main() -> Result<(), Box<dyn Error>> {
 
     let _ = rocket::build()
         .attach(middleware::cors::Cors)
-        .mount("/", routes![api::me_info::get_me_info, api::me_info::options_me_info])
+        .mount("/", routes![api::get_me_info, api::options_me_info])
         .manage(auth)
         .launch()
         .await?;
