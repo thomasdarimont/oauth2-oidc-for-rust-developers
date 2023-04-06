@@ -1,5 +1,4 @@
-use actix_4_jwt_auth::{OIDCValidator, OIDCValidatorConfig};
-use actix_web::rt::task;
+// use actix_web::rt::task;
 use serde::Deserialize;
 use serde_json::Value;
 use std::collections::BTreeMap as Map;
@@ -21,13 +20,4 @@ impl FoundClaims {
     pub fn has_scope(&self, scope: &str) -> bool {
         self.scope.split_ascii_whitespace().any(|s| s == scope)
     }
-}
-
-pub async fn create_oidc_jwt_validator(issuer: String) -> OIDCValidatorConfig {
-    task::spawn_blocking(move || {
-        let validator = OIDCValidator::new_from_issuer(issuer.clone()).unwrap();
-        OIDCValidatorConfig { issuer, validator }
-    })
-    .await
-    .unwrap()
 }

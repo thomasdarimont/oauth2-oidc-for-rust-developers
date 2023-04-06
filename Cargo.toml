@@ -1,2 +1,2 @@
 [workspace]
-members = ['apps/api-actix', 'apps/api-rocket', 'apps/web-actix']
+members = ['apps/api-actix', 'apps/api-rocket']

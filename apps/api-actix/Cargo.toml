@@ -8,8 +8,9 @@ authors = ["Thomas Darimont <thomas.darimont@gmail.com>"]
 
 [dependencies]
 actix-web = { version = "4.3.1", features = ["openssl"] }
+awc = { version = "3.1.1", features = ["openssl"] }
 actix-cors = "0.6.4"
-actix-4-jwt-auth = "0.4.2" # TODO update to 1.0.0
+actix-4-jwt-auth = {version="1.0.0"}
 openssl = "0.10.48"
 serde = { version = "1.0.159", features = ["derive"] }
 serde_json = { version = "1.0.95" }

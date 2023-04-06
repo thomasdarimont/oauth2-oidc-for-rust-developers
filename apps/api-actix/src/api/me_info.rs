@@ -1,4 +1,4 @@
-use crate::middleware::jwt_auth::FoundClaims;
+use crate::middleware::claims::FoundClaims;
 use actix_4_jwt_auth::AuthenticatedUser;
 use actix_web::{get, HttpResponse};
 use chrono::Utc;
