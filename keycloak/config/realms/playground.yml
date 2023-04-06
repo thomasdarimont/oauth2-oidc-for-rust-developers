@@ -2,6 +2,7 @@ realm: playground
 enabled: true
 displayName: Rust Playground
 loginWithEmailAllowed: true
+registrationAllowed: true
 loginTheme: keycloak
 resetPasswordAllowed: true
 accountTheme: keycloak.v2
