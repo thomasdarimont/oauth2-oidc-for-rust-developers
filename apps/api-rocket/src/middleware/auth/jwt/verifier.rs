@@ -35,15 +35,19 @@ impl JwtVerifier {
     }
 
     pub fn verify(&self, token: &str) -> Option<TokenData<Claims>> {
-        let token_kid = match decode_header(token).map(|header| header.kid) {
-            Ok(Some(header)) => header,
-            _ => return None,
-        };
+        // let token_kid = match decode_header(token).map(|header| header.kid) {
+        //     Ok(Some(header)) => header,
+        //     _ => return None,
+        // };
 
-        let jwk_key = match self.get_key(token_kid) {
-            Some(key) => key,
-            _ => return None,
-        };
+        let Ok(Some(token_kid)) = decode_header(token).map(|header| header.kid) else { return None };
+
+        // let jwk_key = match self.get_key(token_kid) {
+        //     Some(key) => key,
+        //     _ => return None,
+        // };
+
+        let Some(jwk_key) = self.get_key(&token_kid) else { return None };
 
         match self.decode_token_with_key(jwk_key, token) {
             Ok(token_data) => Some(token_data),
@@ -55,8 +59,8 @@ impl JwtVerifier {
         self.keys = keys_to_map(keys);
     }
 
-    fn get_key(&self, key_id: String) -> Option<&JwkKey> {
-        self.keys.get(&key_id)
+    fn get_key(&self, key_id: &str) -> Option<&JwkKey> {
+        self.keys.get(key_id)
     }
 
     fn decode_token_with_key(

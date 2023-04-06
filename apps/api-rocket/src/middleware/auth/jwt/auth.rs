@@ -21,6 +21,7 @@ impl Drop for JwtAuth {
 }
 
 impl JwtAuth {
+
     pub fn new() -> JwtAuth {
         let jwk_key_result = fetch_jwks_keys();
         let jwk_keys: JwkKeys = match jwk_key_result {
