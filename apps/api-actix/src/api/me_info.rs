@@ -26,7 +26,7 @@ pub async fn handle_me_info(user: AuthenticatedUser<FoundClaims>) -> HttpRespons
 
     let username = user.claims.preferred_username.unwrap_or("anonymous".into());
     let obj = MeInfo {
-        message: format!("Hello, {}!", username),
+        message: format!("Hello, {username}!"),
         backend: "rust-actix".into(),
         datetime: Utc::now().to_string(),
     };
