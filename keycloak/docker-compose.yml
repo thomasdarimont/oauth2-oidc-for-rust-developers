@@ -1,0 +1,70 @@
+services:
+
+  keycloak:
+    build:
+      context: "."
+      dockerfile: "./docker/Dockerfile"
+    environment:
+      DEBUG: "true"
+      DEBUG_PORT: "*:8787"
+      JAVA_OPTS_APPEND: ""
+      KEYCLOAK_ADMIN: admin
+      KEYCLOAK_ADMIN_PASSWORD: admin
+      KC_HTTPS_CERTIFICATE_FILE: /etc/x509/https/tls.crt
+      KC_HTTPS_CERTIFICATE_KEY_FILE: /etc/x509/https/tls.key
+    ports:
+      - "8080:8080"
+      - "8443:8443"
+      - "127.0.0.1:8787:8787"
+    volumes:
+      - ../certs/rust.test.pem:/etc/x509/https/tls.crt:z
+      - ../certs/rust.test-key.pem:/etc/x509/https/tls.key:z
+      - ./data/keycloak:/opt/keycloak/data:z
+    command:
+      - "--verbose"
+      - "start"
+      - "--optimized"
+      - "--spi-theme-cache-themes=false"
+      - "--spi-theme-cache-templates=false"
+      - "--spi-theme-static-max-age=-1"
+      - "--spi-events-listener-jboss-logging-success-level=info"
+      - "--spi-events-listener-jboss-logging-error-level=warn"
+
+  keycloak-provisioning:
+    image: quay.io/adorsys/keycloak-config-cli:5.6.1-21.0.1
+    environment:
+      KEYCLOAK_URL: http://keycloak:8080/auth
+      KEYCLOAK_USER: admin
+      KEYCLOAK_PASSWORD: admin
+      KEYCLOAK_AVAILABILITYCHECK_ENABLED: "true"
+      KEYCLOAK_AVAILABILITYCHECK_TIMEOUT: "120s"
+      # see: https://github.com/adorsys/keycloak-config-cli/blob/v5.0.0/CHANGELOG.md
+      IMPORT_FILES_LOCATION: "/config/*" # IMPORT_PATH: "/config"
+      IMPORT_CACHE_ENABLED: "true" # IMPORT_FORCE: "false"
+      IMPORT_VAR_SUBSTITUTION_ENABLED: "true" # IMPORT_VARSUBSTITUTION: "true"
+      IMPORT_VALIDATE: "true"
+      KEYCLOAK_FRONTEND_URL: "http://localhost:8080/auth"
+    # See https://github.com/adorsys/keycloak-config-cli#log-level
+    #      LOGGING_LEVEL_KEYCLOAKCONFIGCLI: "debug"
+    volumes:
+      - ./config/realms:/config:z
+
+
+  web-apps:
+    image: httpd:2.4.56-alpine3.17
+    volumes:
+      - ../apps/web-frontend-spa:/usr/local/apache2/htdocs/web-frontend-spa:z
+      - ../certs/rust.test.pem:/usr/local/apache2/conf/server.crt:z
+      - ../certs/rust.test-key.pem:/usr/local/apache2/conf/server.key:z
+    ports:
+      - "4000:80"
+      - "4443:443"
+    command:
+      - /bin/sh
+      - -c
+      - |
+        echo 'ServerName apps.acme.test' >> conf/httpd.conf 
+        sed -i -e 's/^#\(Include .*httpd-ssl.conf\)/\1/' conf/httpd.conf
+        sed -i -e 's/^#\(LoadModule .*mod_ssl.so\)/\1/' conf/httpd.conf 
+        sed -i -e 's/^#\(LoadModule .*mod_socache_shmcb.so\)/\1/' conf/httpd.conf 
+        exec httpd-foreground

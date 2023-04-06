@@ -1,0 +1,147 @@
+realm: playground
+enabled: true
+displayName: Rust Playground
+loginWithEmailAllowed: true
+loginTheme: keycloak
+resetPasswordAllowed: true
+accountTheme: keycloak.v2
+emailTheme: keycloak
+sslRequired: $(env:SSL_REQUIRED:-EXTERNAL)
+
+eventsEnabled: true
+# 120 days
+eventsExpiration: 10368000
+
+clientScopes:
+  - name: custom.api
+    description: Custom API Access
+    protocol: openid-connect
+
+clients:
+  - clientId: client-legacy-app
+    protocol: openid-connect
+    name: Legacy App
+    description: "Legacy App that can obtain tokens with Username + Password and ClientId+Secret via grant_type=password"
+    enabled: true
+    publicClient: false
+    standardFlowEnabled: false
+    directAccessGrantsEnabled: true
+    serviceAccountsEnabled: false
+    secret: "$(env:EXAMPLES_CLIENT_SECRET:-secret)"
+    defaultClientScopes:
+      - "email"
+      - "profile"
+    optionalClientScopes:
+      - "phone"
+
+  - clientId: web-frontend-spa
+    protocol: openid-connect
+    name: "Demo SPA Frontend"
+    description: "Frontend SPA Description"
+    enabled: true
+    publicClient: true
+    standardFlowEnabled: true
+    directAccessGrantsEnabled: false
+    # Show client in account-console
+    alwaysDisplayInConsole: true
+    serviceAccountsEnabled: false
+
+    # Ask user for consent
+    consentRequired: true
+
+    #    attributes: { }
+    fullScopeAllowed: false
+    rootUrl: "https://apps.rust.test:4443/web-frontend-spa"
+    baseUrl: "/?realm=playground&scope=openid"
+    adminUrl: ""
+    redirectUris:
+      - "/*"
+    webOrigins:
+      - "+"
+    defaultClientScopes:
+      - "email"
+    optionalClientScopes:
+      - "phone"
+      - "profile"
+      - "custom.api"
+    attributes:
+    # Enable PKCE validation
+      "pkce.code.challenge.method": "S256"
+      "post.logout.redirect.uris": "+"
+
+roles:
+  # Realm specific roles
+  realm:
+    - name: "user"
+      description: "User Role"
+    - name: "admin"
+      description: "Admin Role"
+    - name: "guest"
+      description: "Guest Role"
+
+groups:
+  - "name": "Users"
+    "attributes":
+      groupAttribute1: ["groupAttributeValue1"]
+    "realmRoles":
+      - "user"
+    #    "clientRoles": {}
+    "subGroups": []
+
+  - "name": "Admins"
+  - "name": "Guests"
+
+users:
+  - username: tester
+    email: test@local.test
+    emailVerified: true
+    firstName: Theo
+    lastName: Tester
+    enabled: true
+    attributes:
+      locale: [ "de" ]
+      phoneNumber: [ "+49178111222333" ]
+      phoneNumberVerified: [ "true" ]
+    credentials:
+      - type: password
+        userLabel: initial
+        value: test
+        temporary: false
+    realmRoles:
+      - "user"
+    groups:
+      - "Users"
+  - username: admin
+    email: admin@local.test
+    emailVerified: true
+    firstName: Arno
+    lastName: Admin
+    enabled: true
+    attributes:
+      locale: [ "de" ]
+    credentials:
+      - type: password
+        userLabel: initial
+        value: test
+        temporary: false
+    realmRoles:
+      - "admin"
+    groups:
+      - "Admins"
+  - username: guest
+    email: guest@local.test
+    emailVerified: true
+    firstName: Guido
+    lastName: Guest
+    enabled: true
+    attributes:
+      locale: [ "de" ]
+    credentials:
+      - type: password
+        userLabel: initial
+        value: test
+        temporary: false
+    realmRoles:
+      - "guest"
+    groups:
+      - "Guests"

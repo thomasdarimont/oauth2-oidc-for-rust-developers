@@ -1,0 +1,12 @@
+# see https://rocket.rs/v0.5-rc/guide/configuration/#overview
+[debug]
+address = "127.0.0.1"
+port = 4853
+workers = 2
+keep_alive = 5
+log_level = "normal"
+
+limits = { forms = 32768 }
+[debug.tls]
+certs = "../../certs/rust.test.pem"
+key = "../../certs/rust.test-key.pem"

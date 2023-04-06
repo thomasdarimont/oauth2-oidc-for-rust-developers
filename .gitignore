@@ -1,0 +1,10 @@
+target
+
+/certs
+!/keycloak/data/.gitkeep
+/keycloak/data
+
+.idea
+.vscode
+.history
+.run
