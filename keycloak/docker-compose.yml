@@ -49,7 +49,6 @@ services:
     volumes:
       - ./config/realms:/config:z
 
-
   web-apps:
     image: httpd:2.4.56-alpine3.17
     volumes:
