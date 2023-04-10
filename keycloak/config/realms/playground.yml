@@ -19,22 +19,6 @@ clientScopes:
     protocol: openid-connect
 
 clients:
-  - clientId: client-legacy-app
-    protocol: openid-connect
-    name: Legacy App
-    description: "Legacy App that can obtain tokens with Username + Password and ClientId+Secret via grant_type=password"
-    enabled: true
-    publicClient: false
-    standardFlowEnabled: false
-    directAccessGrantsEnabled: true
-    serviceAccountsEnabled: false
-    secret: "$(env:EXAMPLES_CLIENT_SECRET:-secret)"
-    defaultClientScopes:
-      - "email"
-      - "profile"
-    optionalClientScopes:
-      - "phone"
-
   - clientId: web-frontend-spa
     protocol: openid-connect
     name: "Demo SPA Frontend"
@@ -69,6 +53,137 @@ clients:
     # Enable PKCE validation
       "pkce.code.challenge.method": "S256"
       "post.logout.redirect.uris": "+"
+
+
+  - clientId: demo-confidential-standard-client
+    protocol: openid-connect
+    name: "Confidential Client with Standard Flow"
+    description: "Standard Client Description"
+    enabled: true
+    publicClient: false
+    standardFlowEnabled: true
+    directAccessGrantsEnabled: false
+    serviceAccountsEnabled: false
+    secret: secret
+    fullScopeAllowed: false
+    redirectUris:
+      - "http://localhost/demo-standard-client/login*"
+      - "https://flowsimulator.pragmaticwebsecurity.com/*"
+    webOrigins:
+      - "+"
+    attributes:
+      "post.logout.redirect.uris": "+"
+
+  - clientId: demo-confidential-standard-client-with-pkce
+    protocol: openid-connect
+    name: "Confidential Client with Standard Flow + PKCE"
+    description: "Standard Client Description"
+    enabled: true
+    publicClient: false
+    standardFlowEnabled: true
+    directAccessGrantsEnabled: false
+    serviceAccountsEnabled: false
+    secret: secret
+    fullScopeAllowed: false
+    redirectUris:
+      - "http://localhost/demo-standard-client/login*"
+      - "https://flowsimulator.pragmaticwebsecurity.com/*"
+    webOrigins:
+      - "+"
+    attributes:
+      # enforce PKCE
+      "pkce.code.challenge.method": "S256"
+      "post.logout.redirect.uris": "+"
+
+
+  - clientId: demo-public-client
+    protocol: openid-connect
+    name: "Public Client with Standard and Implicit Grant"
+    description: "Public Client Description"
+    enabled: true
+    publicClient: true
+    standardFlowEnabled: true
+    implicitFlowEnabled: true
+    directAccessGrantsEnabled: false
+    serviceAccountsEnabled: false
+    fullScopeAllowed: false
+    redirectUris:
+      - "http://localhost/demo-implcit-client/oauth/callback"
+      - "https://flowsimulator.pragmaticwebsecurity.com/*"
+    attributes:
+      "post.logout.redirect.uris": "+"
+
+
+  - clientId: demo-public-client-with-pkce
+    protocol: openid-connect
+    name: "Public Client with Standard and Implicit Grant"
+    description: "Public Client Description"
+    enabled: true
+    publicClient: true
+    standardFlowEnabled: true
+    implicitFlowEnabled: true
+    directAccessGrantsEnabled: false
+    serviceAccountsEnabled: false
+    fullScopeAllowed: false
+    redirectUris:
+      - "http://localhost/demo-implcit-client/oauth/callback"
+      - "https://flowsimulator.pragmaticwebsecurity.com/*"
+    attributes:
+      # enforce PKCE
+      "pkce.code.challenge.method": "S256"
+      "post.logout.redirect.uris": "+"
+
+  - clientId: demo-public-client-ropc
+    protocol: openid-connect
+    name: "Public Client with ROPC Grant"
+    description: "Direct Access Grant Client Description"
+    enabled: true
+    publicClient: true
+    standardFlowEnabled: false
+    directAccessGrantsEnabled: true
+    serviceAccountsEnabled: false
+    fullScopeAllowed: false
+
+  - clientId: demo-confidential-client-ropc
+    protocol: openid-connect
+    name: "Confidential Client with ROPC Grant"
+    description: "Direct Access Grant Client Description"
+    enabled: true
+    publicClient: false
+    standardFlowEnabled: false
+    directAccessGrantsEnabled: true
+    serviceAccountsEnabled: false
+    secret: secret
+    fullScopeAllowed: false
+
+  - clientId: demo-confidential-client-service
+    protocol: openid-connect
+    name: "Standard Client with Client Credentials Grant"
+    description: "Service Client Description"
+    enabled: true
+    publicClient: false
+    standardFlowEnabled: false
+    directAccessGrantsEnabled: false
+    serviceAccountsEnabled: true
+    secret: secret
+    fullScopeAllowed: false
+    redirectUris:
+      - "http://localhost/demo-service-client-1/login*"
+
+  - clientId: demo-device-client
+    protocol: openid-connect
+    name: "Client with Device Flow Grant"
+    description: "Device Flow Grant Description"
+    enabled: true
+    publicClient: false
+    standardFlowEnabled: false
+    directAccessGrantsEnabled: false
+    serviceAccountsEnabled: false
+    secret: secret
+    fullScopeAllowed: false
+    attributes:
+      "oauth2.device.authorization.grant.enabled": "true"
+    redirectUris: []
 
 roles:
   # Realm specific roles
