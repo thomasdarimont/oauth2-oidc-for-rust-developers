@@ -1,0 +1,35 @@
+
+### Obtain tokens via Resource Owner Password Credentials Grant Flow
+POST {{ISSUER}}/protocol/openid-connect/token
+Content-Type: application/x-www-form-urlencoded
+
+client_id={{CLIENT_WITH_PASSWORD_GRANT}}&client_secret={{SECRET}}&username={{USER_USERNAME}}&password={{USER_PASSWORD}}&grant_type=password&scope=profile+openid
+
+> {%
+    client.global.set("ACCESS_TOKEN", response.body.access_token);
+    client.global.set("REFRESH_TOKEN", response.body.refresh_token);
+%}
+
+### Obtain Token info from Token Introspection Endpoint
+POST {{ISSUER}}/protocol/openid-connect/token/introspect
+Content-Type: application/x-www-form-urlencoded
+
+client_id={{CLIENT_WITH_PASSWORD_GRANT}}&client_secret={{SECRET}}&token={{ACCESS_TOKEN}}&token_type_hint=access_token
+
+### Client Credentials Grant
+POST {{ISSUER}}/protocol/openid-connect/token
+Content-Type: application/x-www-form-urlencoded
+
+client_id={{CLIENT_WITH_CLIENT_CREDENTIALS_GRANT}}&client_secret={{SECRET}}&grant_type=client_credentials
+
+> {%
+    client.global.set("ACCESS_TOKEN", response.body.access_token);
+    client.global.set("REFRESH_TOKEN", response.body.refresh_token);
+%}
+
+
+
+### Obtain tokens via Implicit flow
+# Implicit flow requested via response_type=token parameter!
+GET {{ISSUER}}/protocol/openid-connect/auth?client_id={{CLIENT_WITH_IMPLICIT_GRANT}}&redirect_uri={{CLIENT_WITH_IMPLICIT_GRANT_REDIRECT}}&state=12345678&response_type=token&scope=openid profile email
+

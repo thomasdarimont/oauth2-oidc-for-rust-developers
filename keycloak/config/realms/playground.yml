@@ -167,8 +167,6 @@ clients:
     serviceAccountsEnabled: true
     secret: secret
     fullScopeAllowed: false
-    redirectUris:
-      - "http://localhost/demo-service-client-1/login*"
 
   - clientId: demo-device-client
     protocol: openid-connect
