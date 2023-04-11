@@ -1,0 +1,9 @@
+### Call Rocket API
+GET {{API_HOST_ROCKET}}/api/users/me
+Authorization: Bearer XXX
+Accept: application/json
+
+### Call Actix API
+GET {{API_HOST_ACTIX}}/api/users/me
+Authorization: Bearer XXX
+Accept: application/json
