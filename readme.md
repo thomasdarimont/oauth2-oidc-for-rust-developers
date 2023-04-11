@@ -40,12 +40,35 @@ The playground realm contains the following custom clients:
 You can login with the following users:
 - `tester` with password `test`
 
-# Resource Server Examples
+# Example Apps
 
-## Actix
+## OpenID Connect Public Client
+
+### JavaScript
+
+A public client that uses the authorization code flow with PKCE for authentication.
+The frontend can also access the APIs provided by resource server with an access token. 
+
+Run with `cd apps/web-frontend-spa; cargo run`
+
+## OAuth2 Resource Server Examples
+
+The resource servers provide a simple "me" endpoint that return user data contained in the access token.
+
+### Actix
 
 Run with `cd apps/api-actix; cargo run`
 
-## Rocket
+### Rocket
 
 Run with `cd apps/api-rocket; cargo run`
+
+## CLIs with Device Flow
+
+### Plain
+
+Run with `cd apps/cli-device-flow-plain; cargo run`
+
+### Oauth2 Library
+
+Run with `cd apps/cli-device-flow-oauth2; cargo run`
